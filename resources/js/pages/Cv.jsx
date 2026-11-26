@@ -21,9 +21,10 @@ export default function Cv() {
             </div>
 
             <p className="pf-cv-hint no-print">
-                Klik <strong>Download PDF</strong>, lalu pada dialog cetak pilih{' '}
-                <strong>Save as PDF</strong> sebagai tujuan — <strong>bukan</strong>{' '}
-                &quot;Microsoft Print to PDF&quot;, karena printer itu menghapus semua link.
+                <strong>Download PDF</strong> → pilih <strong>Save as PDF</strong> → buka{' '}
+                <strong>More settings</strong> → matikan <strong>Headers and footers</strong>{' '}
+                (itu sumber tanggal, judul, URL, dan nomor halaman). Jangan pilih{' '}
+                &quot;Microsoft Print to PDF&quot; karena link ikut terhapus.
             </p>
 
             <article className="pf-cv">
