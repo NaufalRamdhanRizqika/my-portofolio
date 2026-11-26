@@ -2,11 +2,12 @@ export const cv = {
     name: 'Naufal Ramdhan Rizqika',
     title: 'Lulusan Teknik Informatika | Web Developer | IoT',
     contacts: [
-        { label: 'Bandung, Indonesia' },
+        { label: 'Bandung, Indonesia', href: 'https://www.google.com/maps/search/Bandung,+Indonesia' },
         { label: 'naufalrizqika@gmail.com', href: 'mailto:naufalrizqika@gmail.com' },
         { label: '0851-5968-2991', href: 'tel:085159682991' },
         { label: 'github.com/NaufalRamdhanRizqika', href: 'https://github.com/NaufalRamdhanRizqika' },
         { label: 'linkedin.com/in/naufal-ramdhan-rizqika-04b3712b5', href: 'https://www.linkedin.com/in/naufal-ramdhan-rizqika-04b3712b5' },
+        { label: 'my-portofolio.ethiodeploy.app', href: 'https://my-portofolio.ethiodeploy.app/' },
     ],
     summary:
         'Lulusan S1 Teknik Informatika UNIKOM (IPK 3,18/4,00) yang membangun aplikasi web dengan React, Laravel, dan Tailwind CSS serta sistem monitoring IoT berbasis ESP32. Berpengalaman magang di Bandung Techno Park dan PKL di PT Inovindo. Bersertifikat Certified Web Developer (CWDev) dari BNSP. Tertarik pada pengembangan web, IoT, dan software engineering.',
@@ -40,6 +41,12 @@ export const cv = {
         },
     ],
     organizations: [
+        {
+            role: 'Ketua Pelaksana',
+            org: 'Informatics Sports Championship (ISC)',
+            period: '2024/2025',
+            bullets: [],
+        },
         {
             role: 'Pengurus Divisi Kesenian & Olahraga (Kesra)',
             period: '2024 – 2025',

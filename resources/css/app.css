@@ -96,7 +96,7 @@ a:focus-visible, button:focus-visible {
 .pf-nav-mobile a { transition: color 0.2s ease; }
 .pf-nav-mobile a:hover { color: var(--koi); }
 
-#about, #skills, #projects, #experience, #organization, #contact {
+#about, #skills, #projects, #experience, #organization, #certifications, #contact {
   scroll-margin-top: 4.5rem;
 }
 
@@ -456,17 +456,17 @@ a:focus-visible, button:focus-visible {
   .pf-cv {
     max-width: none; width: auto; margin: 0;
     padding: 0; box-shadow: none; background: #ffffff;
-    font-size: 10pt; line-height: 1.35;
+    font-size: 10pt; line-height: 1.31;
   }
-  .pf-cv section { margin-top: 4px; }
+  .pf-cv section { margin-top: 2px; }
   .pf-cv h2 { margin-bottom: 1px; padding-bottom: 0; border-bottom: 1px solid #8a8a8a; }
   .pf-cv p { margin: 0 0 1px; }
-  .pf-cv .pf-cv-tools { margin-top: 3px !important; }
+  .pf-cv .pf-cv-tools { margin-top: 1px !important; }
   .pf-cv-line { margin: 0 0 0; }
-  .pf-cv-item { margin-bottom: 3px; }
-  .pf-cv-org { margin: 1px 0 2px; }
+  .pf-cv-item { margin-bottom: 2px; }
+  .pf-cv-org { margin: 1px 0 1px; }
   .pf-cv li { margin-bottom: 0; }
-  .pf-cv a { color: #141414 !important; text-decoration: none; }
+  .pf-cv a { color: #1a3f8f !important; text-decoration: underline; }
   .pf-cv-head { border-bottom: 2px solid #141414; padding-bottom: 3px; }
 
   .pf-cv-head, .pf-cv-item { break-inside: avoid; page-break-inside: avoid; }

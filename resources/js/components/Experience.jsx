@@ -2,17 +2,17 @@ import Reveal from './ui/Reveal';
 
 const EXPERIENCE = [
     {
-        role: 'Magang — Modul Arsip & Manajemen Startup',
-        org: 'MyBTP · Laravel + React',
+        role: 'Magang — Modul Arsip Surat & Manajemen Startup',
+        org: 'Bandung Techno Park (MyBTP) · Laravel + React',
         period: 'Juli – September 2025',
-        body: 'CRUD surat masuk/keluar dengan pencarian dan penanda surat penting, katalog startup binaan (filter, pagination), profil startup dengan audit trail, data member berforeign key, serta user management.',
+        body: 'CRUD surat masuk/keluar dengan pencarian, penanda surat penting, validasi lampiran PDF, dan notifikasi status simpan/edit/hapus; katalog startup binaan (filter kategori, pagination); profil startup dengan audit trail; data member berforeign key; serta user management. Menyusun antarmuka modul dengan React dan Tailwind CSS, termasuk komponen reusable agar konsisten antar-modul.',
         tools: ['Laravel', 'React', 'Tailwind CSS', 'PostgreSQL'],
     },
     {
-        role: 'Magang SMK — LMS & Website Reservasi',
-        org: 'PT Inovindo (PKL) · PHP, MySQL',
-        period: '2021',
-        body: 'Membangun LMS e-learning (registrasi, pengumpulan tugas, manajemen tugas admin, absensi, ujian) dan website reservasi undangan (dashboard admin, formulir ke database, riwayat, hapus massal) selama PKL di SMK.',
+        role: 'Web Developer Intern (PKL) — LMS & Website Reservasi',
+        org: 'PT Inovindo · PHP, MySQL',
+        period: 'April – September 2021',
+        body: 'Mengembangkan dashboard admin dan menghubungkan formulir ke database MySQL pada website reservasi undangan, termasuk hapus data massal dan perbaikan bug status. Merancang UML, ERD, database, dan mockup LMS Inovindo Academy, lalu mengimplementasikan fitur sisi siswa (registrasi, profil, pengumpulan tugas). Membangun manajemen tugas admin, memperbaiki absensi, sertifikat, dan halaman ujian, serta menyusun laporan dan presentasi akhir.',
         tools: ['PHP', 'MySQL', 'Bootstrap', 'AdminLTE'],
     },
 ];

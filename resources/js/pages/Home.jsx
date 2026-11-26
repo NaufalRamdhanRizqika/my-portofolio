@@ -5,6 +5,7 @@ import Skills from '../components/Skills';
 import Projects from '../components/Projects';
 import Experience from '../components/Experience';
 import Organization from '../components/Organization';
+import Certifications from '../components/Certifications';
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import Bubbles from '../components/ui/Bubbles';
@@ -23,6 +24,7 @@ export default function Home() {
                 <Skills />
                 <Experience />
                 <Organization />
+                <Certifications />
                 <Contact />
             </main>
 

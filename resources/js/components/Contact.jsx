@@ -1,10 +1,14 @@
 import Reveal from './ui/Reveal';
 
 const LINKS = [
+    { label: 'Portofolio', href: 'https://my-portofolio.ethiodeploy.app/' },
     { label: 'naufalrizqika@gmail.com', href: 'mailto:naufalrizqika@gmail.com' },
     { label: '0851-5968-2991', href: 'tel:085159682991' },
-    { label: 'GitHub', href: 'https://github.com/' },
-    { label: 'LinkedIn', href: 'https://www.linkedin.com/' },
+    { label: 'GitHub', href: 'https://github.com/NaufalRamdhanRizqika' },
+    {
+        label: 'LinkedIn',
+        href: 'https://www.linkedin.com/in/naufal-ramdhan-rizqika-04b3712b5',
+    },
 ];
 
 export default function Contact() {

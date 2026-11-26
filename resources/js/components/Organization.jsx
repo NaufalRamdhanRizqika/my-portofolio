@@ -2,6 +2,12 @@ import Reveal from './ui/Reveal';
 
 const ORGANIZATIONS = [
     {
+        role: 'Ketua Pelaksana',
+        org: 'Informatics Sports Championship (ISC)',
+        period: '2024/2025',
+        tools: ['Organisasi', 'Kepanitiaan'],
+    },
+    {
         role: 'Pengurus Divisi Kesenian & Olahraga (Kesra)',
         org: 'Himpunan Mahasiswa Teknik Informatika (HMIF) — UNIKOM',
         period: '2024 – 2025',
@@ -28,7 +34,7 @@ export default function Organization() {
                                 {e.org}
                             </span>
                         </h3>
-                        <p className="pf-work-body">{e.body}</p>
+                        {e.body && <p className="pf-work-body">{e.body}</p>}
                         <div className="pf-work-tools">
                             {e.tools.map((t) => (
                                 <span key={t}>{t}</span>

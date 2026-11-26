@@ -21,8 +21,9 @@ export default function Cv() {
             </div>
 
             <p className="pf-cv-hint no-print">
-                Klik <strong>Download PDF</strong>, lalu pilih{' '}
-                <strong>Save as PDF</strong> pada dialog cetak.
+                Klik <strong>Download PDF</strong>, lalu pada dialog cetak pilih{' '}
+                <strong>Save as PDF</strong> sebagai tujuan — <strong>bukan</strong>{' '}
+                &quot;Microsoft Print to PDF&quot;, karena printer itu menghapus semua link.
             </p>
 
             <article className="pf-cv">
@@ -103,11 +104,13 @@ export default function Cv() {
                                 <span className="pf-cv-period">{e.period}</span>
                             </div>
                             <p className="pf-cv-org">{e.org}</p>
-                            <ul>
-                                {e.bullets.map((b) => (
-                                    <li key={b}>{b}</li>
-                                ))}
-                            </ul>
+                            {e.bullets.length > 0 && (
+                                <ul>
+                                    {e.bullets.map((b) => (
+                                        <li key={b}>{b}</li>
+                                    ))}
+                                </ul>
+                            )}
                         </div>
                     ))}
                 </section>
