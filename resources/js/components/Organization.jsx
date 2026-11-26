@@ -4,7 +4,7 @@ const ORGANIZATIONS = [
     {
         role: 'Ketua Pelaksana',
         org: 'Informatics Sports Championship (ISC)',
-        period: '2024/2025',
+        period: '2024 – 2025',
         tools: ['Organisasi', 'Kepanitiaan'],
     },
     {
