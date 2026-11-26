@@ -466,12 +466,7 @@ a:focus-visible, button:focus-visible {
   .pf-cv-item { margin-bottom: 2px; }
   .pf-cv-org { margin: 1px 0 1px; }
   .pf-cv li { margin-bottom: 0; }
-  .pf-cv a {
-    color: #1a3f8f !important;
-    text-decoration: underline;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
+  .pf-cv a { color: #141414 !important; text-decoration: none; }
   .pf-cv-head { border-bottom: 2px solid #141414; padding-bottom: 3px; }
 
   .pf-cv-head, .pf-cv-item { break-inside: avoid; page-break-inside: avoid; }
