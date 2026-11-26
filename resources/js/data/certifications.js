@@ -5,7 +5,7 @@ export const CERTIFICATIONS = [
         period: '17 Maret 2026, berlaku 3 tahun',
         body: 'Sertifikasi kompetensi di bidang Pengembangan Perangkat Lunak dan Pemrograman, mencakup 17 unit kompetensi (pemrograman terstruktur dan berorientasi objek, SQL dan akses basis data, algoritma, perancangan user experience, debugging, code review, dan pengujian kode).',
         tools: ['BNSP', 'Web Development'],
-        file: '/sertifikat/bnsp-cwdev.pdf',
+        file: 'bnsp-cwdev.pdf',
         kind: 'pdf',
     },
     {
@@ -14,7 +14,7 @@ export const CERTIFICATIONS = [
         period: '13 Desember 2025, berlaku sampai 13 Desember 2027',
         body: 'Listening 38, Structure and Written Expression 41, Reading Comprehension 42.',
         tools: ['TOEFL', 'English'],
-        file: '/sertifikat/toefl.pdf',
+        file: 'toefl.pdf',
         kind: 'pdf',
     },
     {
@@ -23,7 +23,7 @@ export const CERTIFICATIONS = [
         period: '17 Februari 2024',
         body: 'Kursus dasar jaringan komputer melalui program Cisco Networking Academy.',
         tools: ['Cisco', 'Networking'],
-        file: '/sertifikat/ccna.pdf',
+        file: 'ccna.pdf',
         kind: 'pdf',
     },
     {
@@ -32,7 +32,7 @@ export const CERTIFICATIONS = [
         period: '27 Agustus 2026, berlaku sampai 27 Agustus 2029',
         body: 'Kemampuan dasar menggunakan Google AI (Gemini) sebagai mahasiswa.',
         tools: ['Google', 'AI'],
-        file: '/sertifikat/gemini.pdf',
+        file: 'gemini.pdf',
         kind: 'pdf',
     },
 ];

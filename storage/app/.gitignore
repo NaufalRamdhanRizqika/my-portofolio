@@ -1,3 +1,5 @@
 *
 !public/
 !.gitignore
+!sertifikat/
+!sertifikat/*.pdf
