@@ -8,7 +8,7 @@ const NAV_LINKS = [
     { label: 'Projects',  href: '#projects' },
     { label: 'Experience', href: '#experience' },
     { label: 'Organisasi', href: '#organization' },
-    { label: 'Sertifikasi', href: '#certifications' },
+    { label: 'Sertifikasi', href: '#/sertifikasi' },
     { label: 'CV',         href: '#/cv' },
     { label: 'Contact',   href: '#contact' },
 ];
