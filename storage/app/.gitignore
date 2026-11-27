@@ -2,4 +2,4 @@
 !public/
 !.gitignore
 !sertifikat/
-!sertifikat/*.pdf
+!sertifikat/*.enc

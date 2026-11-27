@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class CertificateController extends Controller
 {
@@ -61,13 +63,12 @@ class CertificateController extends Controller
      */
     public function show(string $file)
     {
-        $path = $this->resolve($file);
+        $content = $this->decrypted($file);
 
-        abort_if($path === null, 404);
-
-        return response()->file($path, [
+        return response($content, 200, [
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="'.$file.'"',
+            'Content-Length' => (string) strlen($content),
             'Cache-Control' => 'private, no-store, max-age=0',
             'X-Content-Type-Options' => 'nosniff',
         ]);
@@ -78,18 +79,37 @@ class CertificateController extends Controller
      */
     public function download(string $file)
     {
-        $path = $this->resolve($file);
+        $content = $this->decrypted($file);
 
-        abort_if($path === null, 404);
-
-        return response()->download($path, $file, [
+        return response($content, 200, [
             'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="'.$file.'"',
+            'Content-Length' => (string) strlen($content),
             'Cache-Control' => 'private, no-store, max-age=0',
+            'X-Content-Type-Options' => 'nosniff',
         ]);
     }
 
     /**
-     * Pastikan berkas ada di daftar putih dan benar-benar tersedia.
+     * Baca berkas terenkripsi lalu dekripsi di memori (memakai APP_KEY).
+     */
+    private function decrypted(string $file): string
+    {
+        $path = $this->resolve($file);
+
+        abort_if($path === null, 404);
+
+        try {
+            return Crypt::decryptString((string) file_get_contents($path));
+        } catch (DecryptException $e) {
+            report($e);
+
+            abort(500, 'Dokumen tidak bisa dibuka. Kunci aplikasi mungkin berubah.');
+        }
+    }
+
+    /**
+     * Pastikan berkas terenkripsi ada di daftar putih dan benar-benar tersedia.
      */
     private function resolve(string $file): ?string
     {
@@ -97,7 +117,7 @@ class CertificateController extends Controller
             return null;
         }
 
-        $path = rtrim((string) config('cert.path'), '/\\').DIRECTORY_SEPARATOR.$file;
+        $path = rtrim((string) config('cert.path'), '/\\').DIRECTORY_SEPARATOR.$file.'.enc';
 
         return is_file($path) ? $path : null;
     }
