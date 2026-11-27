@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { CERTIFICATIONS } from '../data/certifications';
+import PdfViewer from '../components/PdfViewer';
+import ImageViewer from '../components/ImageViewer';
 
 const getXsrfToken = () => {
     const match = document.cookie.match(/(?:^|;\s*)XSRF-TOKEN=([^;]+)/);
@@ -19,10 +21,10 @@ const postJson = (url, body) =>
     });
 
 export default function Sertifikasi() {
-    // null = sedang memeriksa, false = belum login, true = sudah login
+    // null = sedang memeriksa, false = pengunjung, true = pemilik
     const [auth, setAuth] = useState(null);
     const [active, setActive] = useState(null);
-    const [pending, setPending] = useState(null);
+    const [showLogin, setShowLogin] = useState(false);
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [busy, setBusy] = useState(false);
@@ -57,11 +59,11 @@ export default function Sertifikasi() {
     }, []);
 
     useEffect(() => {
-        if (!active && !pending) return;
+        if (!active && !showLogin) return;
 
         const onKey = (e) => {
             if (e.key !== 'Escape') return;
-            if (pending) setPending(null);
+            if (showLogin) setShowLogin(false);
             else setActive(null);
         };
 
@@ -74,19 +76,14 @@ export default function Sertifikasi() {
             window.removeEventListener('keydown', onKey);
             document.body.style.overflow = prevOverflow;
         };
-    }, [active, pending]);
+    }, [active, showLogin]);
 
     useEffect(() => {
-        if (pending) passwordRef.current?.focus();
-    }, [pending]);
+        if (showLogin) passwordRef.current?.focus();
+    }, [showLogin]);
 
-    const openCertificate = (cert) => {
-        if (auth) {
-            setActive(cert);
-            return;
-        }
-
-        setPending(cert);
+    const openLogin = () => {
+        setShowLogin(true);
         setPassword('');
         setError('');
     };
@@ -104,11 +101,9 @@ export default function Sertifikasi() {
             const data = await res.json().catch(() => ({}));
 
             if (res.ok && data.authenticated) {
-                const target = pending;
                 setAuth(true);
-                setPending(null);
+                setShowLogin(false);
                 setPassword('');
-                setActive(target);
                 return;
             }
 
@@ -130,12 +125,10 @@ export default function Sertifikasi() {
         try {
             await postJson('/sertifikat/logout');
         } catch {
-            /* diamkan saja, tetap tutup akses di sisi klien */
+            /* tetap tutup akses di sisi klien */
         } finally {
             setBusy(false);
             setAuth(false);
-            setActive(null);
-            setPending(null);
         }
     };
 
@@ -152,7 +145,7 @@ export default function Sertifikasi() {
                     <a className="pf-btn pf-btn-ghost" href="#/cv">
                         Lihat CV
                     </a>
-                    {auth && (
+                    {auth ? (
                         <button
                             type="button"
                             className="pf-btn pf-btn-ghost"
@@ -161,6 +154,10 @@ export default function Sertifikasi() {
                         >
                             Keluar
                         </button>
+                    ) : (
+                        <button type="button" className="pf-btn pf-btn-ghost" onClick={openLogin}>
+                            Akses pemilik
+                        </button>
                     )}
                 </div>
             </div>
@@ -168,11 +165,9 @@ export default function Sertifikasi() {
             <header className="pf-cert-head">
                 <h1 className="font-display">Sertifikasi</h1>
                 <p>
-                    {auth === null && 'Memeriksa akses dokumen…'}
-                    {auth === false &&
-                        'Dokumen sertifikat dilindungi. Klik salah satu untuk memasukkan kata sandi.'}
-                    {auth === true &&
-                        'Klik salah satu sertifikat untuk melihat dokumen aslinya.'}
+                    {auth
+                        ? 'Klik salah satu sertifikat untuk melihat dokumen. Sebagai pemilik, Anda juga bisa mengunduhnya.'
+                        : 'Klik salah satu sertifikat untuk melihat dokumen. Dokumen hanya dapat dilihat, tidak diunduh.'}
                 </p>
             </header>
 
@@ -191,27 +186,27 @@ export default function Sertifikasi() {
                         <button
                             type="button"
                             className="pf-btn pf-cert-open"
-                            onClick={() => openCertificate(c)}
+                            onClick={() => setActive(c)}
                         >
-                            {auth ? 'Lihat sertifikat' : 'Buka dengan kata sandi'}
+                            Lihat sertifikat
                         </button>
                     </article>
                 ))}
             </div>
 
-            {pending && (
+            {showLogin && (
                 <div
                     className="pf-cert-modal pf-login-modal"
                     role="dialog"
                     aria-modal="true"
-                    aria-label="Masukkan kata sandi"
-                    onClick={() => setPending(null)}
+                    aria-label="Masuk sebagai pemilik"
+                    onClick={() => setShowLogin(false)}
                 >
                     <div className="pf-login-box" onClick={(e) => e.stopPropagation()}>
-                        <h2 className="font-display">Dokumen dilindungi</h2>
+                        <h2 className="font-display">Akses pemilik</h2>
                         <p>
-                            Masukkan kata sandi untuk membuka{' '}
-                            <strong>{pending.role}</strong>.
+                            Masukkan kata sandi untuk membuka tombol unduh dan tautan dokumen
+                            langsung.
                         </p>
 
                         <form className="pf-login-form" onSubmit={handleLogin}>
@@ -231,7 +226,7 @@ export default function Sertifikasi() {
                                 <button
                                     type="button"
                                     className="pf-btn pf-btn-ghost"
-                                    onClick={() => setPending(null)}
+                                    onClick={() => setShowLogin(false)}
                                     disabled={busy}
                                 >
                                     Batal
@@ -257,20 +252,26 @@ export default function Sertifikasi() {
                         <div className="pf-cert-modal-head">
                             <p>{active.role}</p>
                             <div className="pf-cert-modal-actions">
-                                <a
-                                    className="pf-btn pf-btn-ghost"
-                                    href={docUrl(active)}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    Tab baru
-                                </a>
-                                <a
-                                    className="pf-btn pf-btn-ghost"
-                                    href={`${docUrl(active)}/unduh`}
-                                >
-                                    Unduh
-                                </a>
+                                {auth ? (
+                                    <>
+                                        <a
+                                            className="pf-btn pf-btn-ghost"
+                                            href={docUrl(active)}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                        >
+                                            Tab baru
+                                        </a>
+                                        <a
+                                            className="pf-btn pf-btn-ghost"
+                                            href={`${docUrl(active)}/unduh`}
+                                        >
+                                            Unduh
+                                        </a>
+                                    </>
+                                ) : (
+                                    <span className="pf-cert-viewonly">Hanya lihat</span>
+                                )}
                                 <button
                                     type="button"
                                     className="pf-btn"
@@ -280,11 +281,12 @@ export default function Sertifikasi() {
                                 </button>
                             </div>
                         </div>
+
                         <div className="pf-cert-modal-body">
                             {active.kind === 'image' ? (
-                                <img src={docUrl(active)} alt={active.role} />
+                                <ImageViewer url={docUrl(active)} title={active.role} />
                             ) : (
-                                <iframe src={docUrl(active)} title={active.role} />
+                                <PdfViewer url={docUrl(active)} title={active.role} />
                             )}
                         </div>
                     </div>

@@ -529,16 +529,76 @@ a:focus-visible, button:focus-visible {
 }
 .pf-cert-modal-head p { color: var(--foam); font-size: 0.82rem; }
 .pf-cert-modal-actions { display: flex; gap: 0.4rem; flex-shrink: 0; }
-.pf-cert-modal-body { flex: 1; min-height: 0; background: #ffffff; }
-.pf-cert-modal-body iframe,
-.pf-cert-modal-body img {
-  display: block; width: 100%; height: 100%; border: 0;
+.pf-cert-modal-body { flex: 1; min-height: 0; display: flex; background: var(--deep); }
+.pf-cert-viewonly {
+  display: inline-flex; align-items: center;
+  padding: 0.3rem 0.55rem;
+  border: 1px solid rgba(18, 59, 52, 0.95);
+  border-radius: 3px;
+  color: var(--muted);
+  font-size: 0.66rem; letter-spacing: 0.09em; text-transform: uppercase;
+  white-space: nowrap;
 }
-.pf-cert-modal-body img { object-fit: contain; }
+
+/* ---------- penampil dokumen (hanya lihat + zoom) ---------- */
+
+.pf-doc-viewer {
+  display: flex; flex-direction: column;
+  width: 100%; min-height: 0;
+  background: var(--deep);
+}
+.pf-doc-toolbar {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 0.6rem; flex-wrap: wrap;
+  padding: 0.5rem 0.65rem;
+  border-bottom: 1px solid rgba(18, 59, 52, 0.9);
+}
+.pf-doc-zoom, .pf-doc-pages { display: flex; align-items: center; gap: 0.3rem; }
+.pf-doc-zoom span, .pf-doc-pages span {
+  min-width: 3.2rem; text-align: center;
+  color: var(--muted); font-size: 0.76rem;
+  font-variant-numeric: tabular-nums;
+}
+.pf-doc-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 1.9rem; height: 1.9rem; padding: 0 0.45rem;
+  background: transparent;
+  border: 1px solid rgba(18, 59, 52, 0.95);
+  border-radius: 3px;
+  color: var(--foam);
+  font: inherit; font-size: 0.85rem; line-height: 1;
+  cursor: pointer;
+}
+.pf-doc-btn:hover:not(:disabled) { border-color: var(--koi); color: var(--koi); }
+.pf-doc-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.pf-doc-btn:focus-visible { outline: 2px solid var(--koi); outline-offset: 1px; }
+.pf-doc-reset { font-size: 0.72rem; letter-spacing: 0.04em; }
+.pf-doc-scroll {
+  flex: 1; min-height: 0;
+  overflow: auto;
+  padding: 1rem;
+  background: #0a1412;
+  overscroll-behavior: contain;
+}
+.pf-doc-scroll canvas,
+.pf-doc-scroll img {
+  display: block;
+  margin: 0 auto;
+  max-width: none;
+  height: auto;
+  background: #ffffff;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
+}
+.pf-doc-state {
+  margin: 0; padding: 3rem 1rem;
+  color: var(--muted); font-size: 0.82rem; text-align: center;
+}
 
 @media (max-width: 640px) {
   .pf-cert-modal-head { flex-direction: column; align-items: stretch; }
-  .pf-cert-modal-actions { justify-content: flex-end; }
+  .pf-cert-modal-actions { justify-content: flex-end; flex-wrap: wrap; }
+  .pf-doc-toolbar { justify-content: center; }
+  .pf-doc-scroll { padding: 0.6rem; }
 }
 
 /* ---------- print / save as PDF ---------- */
