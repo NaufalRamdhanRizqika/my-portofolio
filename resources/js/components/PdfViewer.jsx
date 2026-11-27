@@ -32,7 +32,7 @@ export default function PdfViewer({ url, title }) {
 
     useEffect(() => {
         let cancelled = false;
-        let loadedDoc = null;
+        let loadingTask = null;
 
         setLoading(true);
         setError('');
@@ -41,19 +41,21 @@ export default function PdfViewer({ url, title }) {
         setZoom(1);
 
         loadPdfJs()
-            .then((pdfjs) => pdfjs.getDocument({ url, withCredentials: true }).promise)
-            .then((loaded) => {
-                loadedDoc = loaded;
+            .then((pdfjs) => {
+                if (cancelled) return null;
 
-                if (cancelled) {
-                    loaded.destroy();
-                    return;
-                }
+                loadingTask = pdfjs.getDocument({ url, withCredentials: true });
+                return loadingTask.promise;
+            })
+            .then((loaded) => {
+                if (!loaded || cancelled) return;
 
                 setDoc(loaded);
             })
-            .catch(() => {
-                if (!cancelled) setError('Dokumen tidak bisa dimuat.');
+            .catch((reason) => {
+                if (!cancelled && reason?.name !== 'AbortException') {
+                    setError('Dokumen tidak bisa dimuat.');
+                }
             })
             .finally(() => {
                 if (!cancelled) setLoading(false);
@@ -61,7 +63,13 @@ export default function PdfViewer({ url, title }) {
 
         return () => {
             cancelled = true;
-            loadedDoc?.destroy();
+
+            // Hentikan render yang masih berjalan sebelum dokumen dihancurkan.
+            renderTaskRef.current?.cancel();
+            renderTaskRef.current = null;
+
+            // Di pdfjs-dist v6, destroy() ada di loading task, bukan di PDFDocumentProxy.
+            loadingTask?.destroy().catch(() => {});
         };
     }, [url]);
 
