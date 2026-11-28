@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Support\CertCrypto;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Crypt;
 
 class CertificateController extends Controller
 {
@@ -100,11 +100,11 @@ class CertificateController extends Controller
         abort_if($path === null, 404);
 
         try {
-            return Crypt::decryptString((string) file_get_contents($path));
+            return CertCrypto::decrypt((string) file_get_contents($path));
         } catch (DecryptException $e) {
             report($e);
 
-            abort(500, 'Dokumen tidak bisa dibuka. Kunci aplikasi mungkin berubah.');
+            abort(500, 'Dokumen tidak bisa dibuka. Kunci sertifikat (CERT_KEY) mungkin belum diisi atau sudah berubah.');
         }
     }
 

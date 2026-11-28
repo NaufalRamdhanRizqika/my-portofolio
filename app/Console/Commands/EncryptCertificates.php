@@ -2,14 +2,14 @@
 
 namespace App\Console\Commands;
 
+use App\Support\CertCrypto;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Crypt;
 
 class EncryptCertificates extends Command
 {
     protected $signature = 'cert:encrypt {file? : Nama berkas PDF di folder raw}';
 
-    protected $description = 'Enkripsi dokumen sertifikat mentah menjadi berkas .enc (kunci dari APP_KEY)';
+    protected $description = 'Enkripsi dokumen sertifikat mentah menjadi berkas .enc';
 
     public function handle(): int
     {
@@ -49,7 +49,7 @@ class EncryptCertificates extends Command
 
             $target = $base.DIRECTORY_SEPARATOR.$name.'.enc';
 
-            file_put_contents($target, Crypt::encryptString((string) file_get_contents($source)));
+            file_put_contents($target, CertCrypto::encrypt((string) file_get_contents($source)));
 
             $this->info(sprintf(
                 'Terenkripsi: %s (%s KB)',
@@ -59,7 +59,16 @@ class EncryptCertificates extends Command
         }
 
         $this->newLine();
-        $this->line('Kunci dekripsi memakai APP_KEY. Jangan mengganti APP_KEY setelah ini.');
+        $this->line('Kunci enkripsi memakai: '.CertCrypto::source());
+
+        if (CertCrypto::source() === CertCrypto::SOURCE_APP_KEY) {
+            $this->warn('CERT_KEY dan CERT_PASSWORD kosong, jadi kunci jatuh ke APP_KEY.');
+            $this->warn('Berkas hanya bisa dibuka di lingkungan yang APP_KEY-nya sama persis.');
+            $this->line('Isi CERT_KEY lalu jalankan perintah ini lagi supaya dokumen portabel.');
+        } else {
+            $this->line('Isi environment variable '.CertCrypto::source().' dengan nilai yang sama di server deploy.');
+            $this->line('Jangan menulis nilainya ke file yang masuk repo.');
+        }
 
         return self::SUCCESS;
     }
