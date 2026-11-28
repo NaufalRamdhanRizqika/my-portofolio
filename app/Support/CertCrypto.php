@@ -92,17 +92,32 @@ class CertCrypto
     {
         $candidates = [];
 
-        $key = trim((string) config('cert.key'));
+        $key = self::setting('key', 'CERT_KEY');
         if ($key !== '') {
             $candidates[self::SOURCE_KEY] = hash('sha256', $key, true);
         }
 
-        $password = (string) config('cert.password');
+        $password = self::setting('password', 'CERT_PASSWORD');
         if ($password !== '') {
             $candidates[self::SOURCE_PASSWORD] = hash('sha256', $password, true);
         }
 
         return $candidates;
+    }
+
+    /**
+     * Baca nilai setting; kalau config sudah di-cache saat build tanpa env
+     * var, jatuh membaca env secara langsung (sama seperti login sertifikat).
+     */
+    private static function setting(string $config, string $env): string
+    {
+        $value = config($config);
+
+        if ($value === null || $value === '') {
+            $value = env($env);
+        }
+
+        return trim((string) $value);
     }
 
     private static function encrypter(string $material): Encrypter
