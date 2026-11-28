@@ -9,13 +9,51 @@ use Illuminate\Http\Request;
 class CertificateController extends Controller
 {
     /**
-     * Cek apakah pengunjung sudah memasukkan kata sandi pada session ini.
+     * Cek apakah pengunjung sudah memasukkan kata sandi pada session ini,
+     * plus diagnosis ringkas lingkungan server (tanpa membocorkan nilai kunci).
      */
     public function status(Request $request)
     {
         return response()->json([
             'authenticated' => (bool) $request->session()->get(config('cert.session_key')),
+            'diagnostic' => $this->diagnostic(),
         ]);
+    }
+
+    /**
+     * Ringkasan ketersediaan kunci & apakah dokumen pertama bisa dibuka.
+     *
+     * @return array<string, bool|string>
+     */
+    private function diagnostic(): array
+    {
+        $files = (array) config('cert.files');
+        $first = (string) reset($files);
+
+        $decryptOk = false;
+        $tried = [];
+
+        try {
+            $path = $this->resolve($first);
+            if ($path !== null) {
+                CertCrypto::decrypt((string) file_get_contents($path));
+                $decryptOk = true;
+            } else {
+                $tried[] = 'file-hilang';
+            }
+        } catch (DecryptException $e) {
+            $tried[] = 'kunci-tidak-cocok';
+        }
+
+        return [
+            'cert_key_set' => trim((string) (config('cert.key') ?: env('CERT_KEY'))) !== '',
+            'cert_password_set' => trim((string) (config('cert.password') ?: env('CERT_PASSWORD'))) !== '',
+            'app_key_set' => trim((string) config('app.key')) !== '',
+            'active_source' => CertCrypto::source(),
+            'first_file' => $first,
+            'decrypt_ok' => $decryptOk,
+            'note' => implode(', ', $tried),
+        ];
     }
 
     /**
